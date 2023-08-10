@@ -1,12 +1,21 @@
 {% load static %}
 <!-- partial:partials/_sidebar.html -->
-<aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open bg-dark bg-gradient">
+<style>
+    .mdc-drawer {
+      background-color: #212121 !important;
+    }
+  </style>
+<aside class="mdc-drawer mdc-drawer--dismissible mdc-drawer--open bg-dark bg-gradient" style="background-color: #212121;">
     <div class="mdc-drawer__header border-bottom border-light">
         <a href="{% url 'home-page' %}" class="brand-logo">
             <div class="text-center" style="margin: 0;">
-                <img src="/static/img/white.png" alt="EM AR Handicraft Logo" class="logo" style="width: 35%; margin: 0;">
-            </div>            
-            
+                <style>
+                    .mdc-drawer.mdc-drawer--dismissible .mdc-drawer__header .brand-logo {
+                      padding: 0 !important;
+                    }
+                  </style>
+                <img src="/static/img/white.png" alt="EM AR Handicraft Logo" class="logo" style="width: 32%;">
+            </div>
         </a>
     </div>
     <div class="mdc-drawer__content">

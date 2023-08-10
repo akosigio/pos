@@ -49,9 +49,9 @@
                     {% for product in products %}
                     <tr>
                         <td class="px-2 py-1 text-center">{{ product.id }}</td>
-                        <td class="px-2 py-1 text-start">{{ product.category_id }}</td>
-                        <td class="px-2 py-1 text-start">{{ product.code }} ( {{ product.name }} )</td>
-                        <td class="px-2 py-1 text-start">{{ product.description }}</td>
+                        <td class="px-2 py-1 text-center">{{ product.category_id }}</td>
+                        <td class="px-2 py-1 text-center">{{ product.code }} ( {{ product.name }} )</td>
+                        <td class="px-2 py-1 text-center">{{ product.description }}</td>
                         <td class="px-2 py-1 text-center">
                             {% if product.status == 1 %}
                             <span class="badge bg-success rounded-pill px-3">Active</span>

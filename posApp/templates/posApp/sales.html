@@ -33,10 +33,10 @@
                     {% for sale in sale_data %}
                     <tr>
                         <td class="px-2 py-1 text-center">{{ sale.id }}</td>
-                        <td class="px-2 py-1 text-start">{{ sale.date_added|date:'Y-m-d H:i' }}</td>
-                        <td class="px-2 py-1 text-start">{{ sale.code }}</td>
-                        <td class="px-2 py-1 text-end">{{ sale.grand_total|intcomma }}</td>
-                        <td class="px-2 py-1 text-end">({{ sale.tax }}%) {{ sale.tax_amount|intcomma:2 }}</td>
+                        <td class="px-2 py-1 text-center">{{ sale.date_added|date:'Y-m-d H:i' }}</td>
+                        <td class="px-2 py-1 text-center">{{ sale.code }}</td>
+                        <td class="px-2 py-1 text-center">{{ sale.grand_total|intcomma }}</td>
+                        <td class="px-2 py-1 text-center">({{ sale.tax }}%) {{ sale.tax_amount|intcomma:2 }}</td>
                         <td class="px-2 py-1 text-center">{{ sale.item_count|intcomma }}</td>
                         <td class="px-2 py-1 text-center">
                             <button class="mdc-button mdc-button--raised p-1 icon-button filled-button--light mdc-ripple-upgraded view-data" type="button" data-id="{{ sale.id }}" title="View Receipt">

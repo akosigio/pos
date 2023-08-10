@@ -5821,13 +5821,13 @@ a.mdc-list-item {
 }
 
 .mdc-select:not(.mdc-select--disabled).mdc-select--focused .mdc-line-ripple {
-  background-color: #7a00ff;
+  background-color: rgb(150, 75, 0);
   /* @alternate */
-  background-color: var(--mdc-theme-primary, #7a00ff);
+  background-color: rgb(150, 75, 0);
 }
 
 .mdc-select:not(.mdc-select--disabled).mdc-select--focused .mdc-floating-label {
-  color: rgba(122, 0, 255, 0.87);
+  color: rgb(150, 75, 0);
 }
 
 .mdc-select:not(.mdc-select--disabled) .mdc-select__native-control:hover {
@@ -7754,7 +7754,7 @@ a.mdc-list-item {
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
@@ -7762,40 +7762,40 @@ a.mdc-list-item {
 }
 
 .mdc-text-field .mdc-text-field__input {
-  caret-color: #7a00ff;
+  caret-color: rgba(255, 255, 255, 0.87);
   /* @alternate */
-  caret-color: #ffffff;
+  caret-color: rgba(255, 255, 255, 0.87);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mdc-text-field__input {
-  border-bottom-color: rgba(0, 0, 0, 0.42);
+  border-bottom-color: rgba(255, 255, 255, 0.87);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mdc-text-field__input:hover {
-  border-bottom-color: rgba(0, 0, 0, 0.87);
+  border-bottom-color: rgba(255, 255, 255, 0.87);
 }
 
 .mdc-text-field .mdc-line-ripple {
   background-color: #fff;
   /* @alternate */
-  background-color: var(--mdc-theme-on-primary, #fff);
+  background-color: rgba(255, 255, 255, 0.87);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--textarea) {
-  border-bottom-color: rgba(0, 0, 0, 0.12);
+  border-bottom-color: rgba(255, 255, 255, 0.87);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-helper-text {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field-character-counter,
 .mdc-text-field:not(.mdc-text-field--disabled) + .mdc-text-field-helper-line .mdc-text-field-character-counter {
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.87);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__icon {
-  color: rgba(0, 0, 0, 0.54);
+  color:rgba(255, 255, 255, 0.87);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled) {
@@ -19051,7 +19051,7 @@ a.mdc-list-item {
 }
 
 .bg-dark {
-  background: #3e4b5b !important;
+  background: #212121 !important;
 }
 
 .text-dark {
@@ -22898,7 +22898,7 @@ address p {
 
 .mdc-drawer .mdc-drawer__header .brand-logo {
   display: block;
-  padding: 28px 0;
+  padding: 0 !important;
 }
 
 .mdc-drawer .mdc-drawer__content .user-info {

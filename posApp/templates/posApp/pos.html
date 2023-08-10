@@ -17,11 +17,10 @@
                     <div class="col-lg-5 col-md-5 col-sm-12">
                         <div class="form-group mb-3">
                             <label for="product-id">Scan or Input Product Code</label>
-                            {% for product in products %}
                             <input id="barcode-input" type="text" placeholder="Scan Barcode" />
                             <select id="product-id" class="form-select form-select-sm">
                                 <option value="" disabled selected></option>
-                            
+                                {% for product in products %}
                                 <option value="{{ product.pk }}">{{ product.code }}</option>
                                 {% endfor %}
                             </select>
@@ -151,7 +150,7 @@
             if (inputValue.length === 8) { // Change to the appropriate barcode length
                 addToTable();
             }
-        })
+        });
 
     function addToTable() {
         var id = $('#barcode-input').val();
@@ -177,7 +176,7 @@
         tr.find('.product_price').text(parseFloat(data.price).toLocaleString('en-US'));
         tr.find('.product_total').text(parseFloat(data.price * qty).toLocaleString('en-US'));
         $('#POS-field table tbody').append(tr);
-        $('#barcode-input').val('').trigger('input');
+        $('#barcode-input').val('').trigger('change');
         $('#product-qty').val(1);
         calc();
     }
