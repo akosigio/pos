@@ -36,7 +36,7 @@
                     <div class="col-lg-4 col-md-2 col-md-12">
                         <div class="form-group mb-3">
                             <button class="btn btn-light btn-sm bg-gradient border rounded-0 text-start" type="button"
-                                id="add_item"><i class="mdi mdi-plus"></i>Add Item</button>
+                                id="add_item"><i class="mdi mdi-plus"></i> Add Item</button>
                         </div>
                     </div>
 
@@ -141,49 +141,47 @@
         })
     }
 
-   function autoScan() {
+
+    function addToTable(qty, product, price, total) {
+        const tableBody = $('tbody');
+        const newRow = $('<tr>');
+
+        // Add table cells with the provided data
+        newRow.append($('<td>').text(tableBody.children().length + 1)); // Auto-increment the first cell (index)
+        newRow.append($('<td>').text(qty));
+        newRow.append($('<td>').text(product));
+        newRow.append($('<td>').text(price));
+        newRow.append($('<td>').text(total));
+
+        // Append the new row to the table body
+        tableBody.append(newRow);
+    }
+
+    function autoScan() {
         const myInput = $('#barcode-input');
 
         myInput.on('input', () => {
             const inputValue = myInput.val();
             console.log('Input value changed:', inputValue);
-            if (inputValue.length === 8) { // Change to the appropriate barcode length
-                addToTable();
+            
+            if (inputValue.length === 8) {
+                // Replace the following sample data with your actual data from the barcode scanner
+                const qty = 1;
+                const product = "Sample Product";
+                const price = 10.00;
+                const total = qty * price;
+
+                // Call the addToTable function with the provided data
+                addToTable(qty, product, price, total);
+
+                // Clear the barcode input field after adding to the table
+                myInput.val('');
             }
         });
-
-    function addToTable() {
-        var id = $('#barcode-input').val();
-        var qty = $('#product-qty').val();
-        console.log(id, qty);
-        if (id === '' || qty === '' || id === null || qty === null) {
-        alert('Product and Quantity Field is required!');
-        return false;
     }
 
-    if ($('#POS-field table tbody input[name="product_id[]"][value="' + id + '"]').length > 0) {
-        alert('Item Already in the List.');
-        return false;
-    }
-
-    if (prod_arr[id]) {
-        var data = prod_arr[id];
-        var tr = $($('noscript#item-clone').html()).clone();
-        tr.find('[name="qty[]"]').val(qty);
-        tr.find('[name="product_id[]"]').val(id);
-        tr.find('[name="price[]"]').val(data.price);
-        tr.find('.product_name').text(data.name);
-        tr.find('.product_price').text(parseFloat(data.price).toLocaleString('en-US'));
-        tr.find('.product_total').text(parseFloat(data.price * qty).toLocaleString('en-US'));
-        $('#POS-field table tbody').append(tr);
-        $('#barcode-input').val('').trigger('change');
-        $('#product-qty').val(1);
-        calc();
-    }
-}
-}
-
-autoScan()
+    // Call the autoScan function to enable scanning and adding to the table
+    autoScan();
 
     function calc() {
         var sub_total = 0;
@@ -207,7 +205,6 @@ autoScan()
         $('[name="sub_total"]').val(parseFloat(sub_total))
 
     }
-    
     $(function () {
         $('#product-id').select2({
             placeholder: "Please Select Product here",
