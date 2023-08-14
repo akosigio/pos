@@ -165,18 +165,32 @@
             console.log('Input value changed:', inputValue);
             
             if (inputValue.length === 8) {
-                // Replace the following sample data with your actual data from the barcode scanner
+    $.ajax({
+        url: "{% url 'lookup-product' %}",  // Replace with your URL for looking up the product
+        method: "GET",
+        data: { barcode: inputValue },
+        dataType: "json",
+        success: function(response) {
+            if (response.status === 'success') {
+                const product = response.product;
                 const qty = 1;
-                const product = "Sample Product";
-                const price = 10.00;
+                const price = parseFloat(product.price);
                 const total = qty * price;
 
-                // Call the addToTable function with the provided data
-                addToTable(qty, product, price, total);
+                addToTable(qty, product.name, price, total);
+             } else {
+                alert("Product not found.");
+                }
 
-                // Clear the barcode input field after adding to the table
+                 myInput.val('');
+                },
+                 error: function(error) {
+                console.error("Error while looking up product:", error);
                 myInput.val('');
-            }
+                }
+                });
+                }
+
         });
     }
 

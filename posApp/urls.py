@@ -5,6 +5,7 @@ from django.urls import path
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
+    path('lookup-product/', views.lookup_product, name='lookup-product'),
     path('redirect-admin', RedirectView.as_view(url="/admin"),name="redirect-admin"),
     path('', views.home, name="home-page"),
     path('login', auth_views.LoginView.as_view(template_name = 'posApp/login.html',redirect_authenticated_user=True), name="login"),
