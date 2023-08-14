@@ -173,7 +173,7 @@
         success: function(response) {
             if (response.status === 'success') {
                 const product = response.product;
-                const qty = 1;
+                const qty = parseFloat($('#product-qty').val());
                 const price = parseFloat(product.price);
                 const total = qty * price;
 
