@@ -10,8 +10,30 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 import json, sys
 from datetime import date, datetime
+from django.http import JsonResponse
 
 # Login
+
+def lookup_product(request):
+    barcode = request.GET.get('barcode', None)
+    
+    if barcode:
+        try:
+            product = Products.objects.get(code=barcode)
+            response_data = {
+                'status': 'success',
+                'product': {
+                    'name': product.name,
+                    'price': product.price,
+                }
+            }
+        except Products.DoesNotExist:
+            response_data = {'status': 'error', 'message': 'Product not found.'}
+    else:
+        response_data = {'status': 'error', 'message': 'Invalid barcode.'}
+    
+    return JsonResponse(response_data)
+
 def login_user(request):
     logout(request)
     resp = {"status":'failed','msg':''}
@@ -311,3 +333,4 @@ def delete_sale(request):
         resp['msg'] = "An error occured"
         print("Unexpected error:", sys.exc_info()[0])
     return HttpResponse(json.dumps(resp), content_type='application/json')
+
