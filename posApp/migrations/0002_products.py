@@ -20,6 +20,7 @@ class Migration(migrations.Migration):
                 ('name', models.TextField()),
                 ('description', models.TextField()),
                 ('price', models.FloatField(default=0)),
+                ('quantity', models.IntegerField(default=0)),
                 ('status', models.IntegerField(default=1)),
                 ('date_added', models.DateTimeField(default=django.utils.timezone.now)),
                 ('date_updated', models.DateTimeField(auto_now=True)),
