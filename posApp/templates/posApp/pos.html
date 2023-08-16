@@ -156,57 +156,89 @@
         // Append the new row to the table body
         tableBody.append(newRow);
     }
+    function comp() {
+        let totalSum = 0;
 
-    function autoScan() {
-        const myInput = $('#barcode-input');
+        $('tbody tr').each(function() {
+        const totalCell = $(this).find('td:eq(4)').text();
+        totalSum += parseFloat(totalCell);
+    });
 
-        myInput.on('input', () => {
-            const inputValue = myInput.val();
-            console.log('Input value changed:', inputValue);
-            
-            if (inputValue.length === 8) {
-    $.ajax({
-        url: "{% url 'lookup-product' %}",  // Replace with your URL for looking up the product
-        method: "GET",
-        data: { barcode: inputValue },
-        dataType: "json",
-        success: function(response) {
-            if (response.status === 'success') {
-                const product = response.product;
-                const qty = parseFloat($('#product-qty').val());
-                const price = parseFloat(product.price);
-                const total = qty * price;
-
-                addToTable(qty, product.name, price, total);
-             } else {
-                alert("Product not found.");
-                }
-
-                 myInput.val('');
-                },
-                 error: function(error) {
-                console.error("Error while looking up product:", error);
-                myInput.val('');
-                }
-                });
-                }
-
-        });
+    // Update the Sub Total element with the calculated sum
+    $('#sub_total').text(totalSum.toFixed(2));
     }
 
-    // Call the autoScan function to enable scanning and adding to the table
-    autoScan();
+    function autoScan() {
+    const myInput = $('#barcode-input');
+
+    myInput.on('input', () => {
+        const inputValue = myInput.val();
+        console.log('Input value changed:', inputValue);
+        
+        if (inputValue.length === 8) {
+            $.ajax({
+                url: "{% url 'lookup-product' %}",
+                method: "GET",
+                data: { barcode: inputValue },
+                dataType: "json",
+                success: function(response) {
+                    if (response.status === 'success') {
+                        const product = response.product;
+                        const qty = parseFloat($('#product-qty').val()); // Get the quantity from the input
+                        const price = parseFloat(product.price);
+                        console.log(price)
+                        const total = qty * price;
+
+                        const tableBody = $('tbody');
+                        const newRow = $('<tr>');
+                        
+                        newRow.append($('<td>').html('<button class="btn btn-sm btn-outline-danger rounded-0 rem-item" type="button"><i class="mdi mdi-close"></i></button>')
+                            .click(function () {
+                                if (confirm("Are you sure to remove " + product.code + " product from the list?")) {
+                                    newRow.remove();
+                                }
+                            })
+                        );
+                        
+                        newRow.append($('<td>').text(qty));
+                        newRow.append($('<td>').text(product.name));
+                        newRow.append($('<td>').text(price));
+                        newRow.append($('<td>').text(total));
+
+                        tableBody.append(newRow);
+                        
+                        comp();
+                    } else {
+                        alert("Product not found.");
+                    }
+                    
+                    myInput.val('');
+                },
+                error: function(error) {
+                    console.error("Error while looking up product:", error);
+                    myInput.val('');
+                }
+            });
+        }
+    });
+}
+
+// Call the autoScan function to enable scanning and adding to the table
+autoScan();
 
     function calc() {
         var sub_total = 0;
         var grand_total = 0;
         $('#POS-field table tbody tr').each(function () {
             price = $(this).find('[name="price[]"]').val()
+            console.log(price)
             qty = $(this).find('[name="qty[]"]').val()
             qty = qty > 0 ? qty : 0
             total = parseFloat(price) * parseFloat(qty)
+            console.log(total)
             $(this).find('.product_total').text(parseFloat(total).toLocaleString('en-US'))
             sub_total += parseFloat(total)
+            console.log(sub_total)
         })
         tax = $('[name="tax"]').val()
         tax = tax / 100;
@@ -217,6 +249,7 @@
         $('[name="grand_total"]').val(parseFloat(sub_total))
         $('#sub_total').text(parseFloat(sub_total).toLocaleString('en-US'))
         $('[name="sub_total"]').val(parseFloat(sub_total))
+        
 
     }
     $(function () {
