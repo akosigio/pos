@@ -65,6 +65,10 @@
                             <tbody>
                             </tbody>
                         </table>
+                        <dd class="text-end py-1 px-2 rounded-0 bg-light">
+                            <input type="hidden" name="sub_total" value="0">
+                            <span class="h3 fw-bold" id="overall_total">0.00</span>
+                        </dd>
                     </div>
                     <div class="col-4 bg-gradient bg-dark bg-opacity-50 border h-100">
                         <div class="col-12 py-4 px-2">
@@ -157,16 +161,22 @@
         tableBody.append(newRow);
     }
     function comp() {
-        let totalSum = 0;
+    let totalSum = 0;
 
-        $('tbody tr').each(function() {
+    $('tbody tr').each(function() {
         const totalCell = $(this).find('td:eq(4)').text();
         totalSum += parseFloat(totalCell);
     });
 
+    // Store the result in a new variable
+    const newTotalSum = totalSum.toFixed(2);
+
     // Update the Sub Total element with the calculated sum
-    $('#sub_total').text(totalSum.toFixed(2));
-    }
+    $('#overall_total').text(newTotalSum);
+    console.log(newTotalSum);
+}
+
+    
 
     function autoScan() {
     const myInput = $('#barcode-input');
@@ -186,7 +196,6 @@
                         const product = response.product;
                         const qty = parseFloat($('#product-qty').val()); // Get the quantity from the input
                         const price = parseFloat(product.price);
-                        console.log(price)
                         const total = qty * price;
 
                         const tableBody = $('tbody');
@@ -226,19 +235,24 @@
 // Call the autoScan function to enable scanning and adding to the table
 autoScan();
 
+    $('#check_out').click(function () {
+            if ($('#POS-field table tbody tr').length <= 0) {
+                alert("Add atleast 1 product first!")
+                return false;
+            }
+            uni_modal("Checkout", "{% url 'checkout-modal' %}?overall_total=" + $('[name="overall_total"]').val())
+        })
+
     function calc() {
         var sub_total = 0;
         var grand_total = 0;
         $('#POS-field table tbody tr').each(function () {
             price = $(this).find('[name="price[]"]').val()
-            console.log(price)
             qty = $(this).find('[name="qty[]"]').val()
             qty = qty > 0 ? qty : 0
             total = parseFloat(price) * parseFloat(qty)
-            console.log(total)
             $(this).find('.product_total').text(parseFloat(total).toLocaleString('en-US'))
             sub_total += parseFloat(total)
-            console.log(sub_total)
         })
         tax = $('[name="tax"]').val()
         tax = tax / 100;
@@ -260,7 +274,7 @@ autoScan();
         $('#add_item').click(function () {
             var id = $('#product-id').val()
             var qty = $('#product-qty').val()
-            console.log(id, qty)
+
             if (id == '' || qty == '' || id == null || qty == null) {
                 alert("Product and Quantity Field is required!")
                 return false
