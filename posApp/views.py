@@ -11,9 +11,6 @@ from django.shortcuts import redirect
 import json, sys
 from datetime import date, datetime
 from django.http import JsonResponse
-from .models import Products
-
-
 
 # Login
 
@@ -161,21 +158,23 @@ def products(request):
         'products':product_list,
     }
     return render(request, 'posApp/products.html',context)
-def product_list(request):
-    products = Products.objects.all()  # You can include .values('id', 'category_id', 'code', 'name', 'description', 'price', 'quantity', 'status') if needed
-    return render(request, 'posApp/product.html', {'products': products})
 @login_required
 def manage_products(request):
-    product_id = request.GET.get('id')  # Get the product ID from the query parameter
-    product = Products.objects.filter(id=product_id).first() if product_id else None
-    categories = Category.objects.filter(status=1).all()
-
+    product = {}
+    categories = Category.objects.filter(status = 1).all()
+    if request.method == 'GET':
+        data =  request.GET
+        id = ''
+        if 'id' in data:
+            id= data['id']
+        if id.isnumeric() and int(id) > 0:
+            product = Products.objects.filter(id=id).first()
+    
     context = {
-        'product': product,
-        'categories': categories,
+        'product' : product,
+        'categories' : categories
     }
-    return render(request, 'posApp/manage_product.html', context)
-@login_required
+    return render(request, 'posApp/manage_product.html',context)
 def test(request):
     categories = Category.objects.all()
     context = {
@@ -184,76 +183,56 @@ def test(request):
     return render(request, 'posApp/test.html',context)
 @login_required
 def save_product(request):
-    if request.method == 'POST':
-        data = request.POST
-        resp = {'status': 'failed'}
-
+    data =  request.POST
+    resp = {'status':'failed'}
+    id= ''
+    if 'id' in data:
+        id = data['id']
+    if id.isnumeric() and int(id) > 0:
+        check = Products.objects.exclude(id=id).filter(code=data['code']).all()
+    else:
+        check = Products.objects.filter(code=data['code']).all()
+    if len(check) > 0 :
+        resp['msg'] = "Product Code Already Exists in the database"
+    else:
+        category = Category.objects.filter(id = data['category_id']).first()
         try:
-            product_id = data.get('id')  # Get the product ID using data.get()
-            code = data.get('code')
-            category_id = data.get('category_id')
-            name = data.get('name')
-            description = data.get('description')
-            price = data.get('price')
-            status = data.get('status')
-            quantity = data.get('quantity')
-
-            if product_id:
-                product_id = int(product_id)  # Convert to integer if provided
-
-            # Check if product code already exists
-            if Products.objects.exclude(id=product_id).filter(code=code).exists():
-                resp['msg'] = "Product Code Already Exists in the database"
+            if (data['id']).isnumeric() and int(data['id']) > 0 :
+                save_product = Products.objects.filter(id = data['id']).update(code=data['code'], category_id=category, name=data['name'], description = data['description'], price = float(data['price']),status = data['status'])
             else:
-                # Validate and save product
-                category = Category.objects.filter(id=category_id).first()
-                if category is None:
-                    resp['msg'] = "Invalid Category ID"
-                else:
-                    if product_id and product_id > 0:
-                        product = Products.objects.get(id=product_id)
-                    else:
-                        product = Products()
-                    product.code = code
-                    product.category_id = category
-                    product.name = name
-                    product.description = description
-                    product.price = float(price)
-                    product.status = status
-                    product.quantity = int(quantity)
-                    product.save()
-                    resp['status'] = 'success'
-                    resp['msg'] = 'Product Successfully saved.'
-        except Exception as e:
-            resp['msg'] = f"An error occurred: {str(e)}"
-
-        return JsonResponse(resp)
+                save_product = Products(code=data['code'], category_id=category, name=data['name'], description = data['description'], price = float(data['price']),status = data['status'])
+                save_product.save()
+            resp['status'] = 'success'
+            messages.success(request, 'Product Successfully saved.')
+        except:
+            resp['status'] = 'failed'
+    return HttpResponse(json.dumps(resp), content_type="application/json")
 
 @login_required
 def delete_product(request):
-    data = request.POST
-    resp = {'status': ''}
+    data =  request.POST
+    resp = {'status':''}
     try:
-        product_id = data.get('id')
-        Products.objects.filter(id=product_id).delete()
+        Products.objects.filter(id = data['id']).delete()
         resp['status'] = 'success'
+        messages.success(request, 'Product Successfully deleted.')
     except:
         resp['status'] = 'failed'
-    return JsonResponse(resp)
-
+    return HttpResponse(json.dumps(resp), content_type="application/json")
 @login_required
 def pos(request):
-    products = Products.objects.filter(status=1)
+    products = Products.objects.filter(status = 1)
     product_json = []
     for product in products:
-        product_json.append({'id': product.id, 'name': product.name, 'price': float(product.price)})
+        product_json.append({'id':product.id, 'name':product.name, 'price':float(product.price)})
     context = {
-        'page_title': "Point of Sale",
-        'products': products,
-        'product_json': json.dumps(product_json)
+        'page_title' : "Point of Sale",
+        'products' : products,
+        'product_json' : json.dumps(product_json)
     }
     # return HttpResponse('')
-    return render(request, 'posApp/pos.html', context)
+    return render(request, 'posApp/pos.html',context)
+
 @login_required
 def checkout_modal(request):
     grand_total = 0
