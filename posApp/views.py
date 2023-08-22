@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 import json, sys
 from datetime import date, datetime
 from django.http import JsonResponse
+from .models import Products, Category
 
 # Login
 
@@ -175,50 +176,62 @@ def manage_products(request):
         'categories' : categories
     }
     return render(request, 'posApp/manage_product.html',context)
+
+@login_required
 def test(request):
     categories = Category.objects.all()
     context = {
         'categories' : categories
     }
     return render(request, 'posApp/test.html',context)
+
 @login_required
 def save_product(request):
-    data =  request.POST
-    resp = {'status':'failed'}
-    id= ''
-    if 'id' in data:
-        id = data['id']
-    if id.isnumeric() and int(id) > 0:
-        check = Products.objects.exclude(id=id).filter(code=data['code']).all()
-    else:
-        check = Products.objects.filter(code=data['code']).all()
-    if len(check) > 0 :
-        resp['msg'] = "Product Code Already Exists in the database"
-    else:
-        category = Category.objects.filter(id = data['category_id']).first()
-        try:
-            if (data['id']).isnumeric() and int(data['id']) > 0 :
-                save_product = Products.objects.filter(id = data['id']).update(code=data['code'], category_id=category, name=data['name'], description = data['description'], price = float(data['price']),status = data['status'])
-            else:
-                save_product = Products(code=data['code'], category_id=category, name=data['name'], description = data['description'], price = float(data['price']),status = data['status'])
-                save_product.save()
-            resp['status'] = 'success'
-            messages.success(request, 'Product Successfully saved.')
-        except:
-            resp['status'] = 'failed'
-    return HttpResponse(json.dumps(resp), content_type="application/json")
+    data = request.POST
+    resp = {'status': 'failed'}
+
+    try:
+        product_id = data.get('id', None)  # Use data.get to avoid KeyError if 'id' is missing
+        
+        if product_id:
+            product_id = int(product_id)
+            product = Products.objects.filter(id=product_id).first()  # Use .first() to handle None gracefully
+        else:
+            product = Products()  # Create a new product instance
+        
+        # Validate and set attributes
+        product.code = data['code']
+        category = Category.objects.filter(id=data['category_id']).first()
+        if not category:
+            resp['msg'] = "Invalid Category ID"
+            return JsonResponse(resp)
+
+        product.category_id = category
+        product.name = data['name']
+        product.description = data['description']
+        product.price = float(data['price'])
+        product.status = data['status']
+        product.quantity = int(data['quantity'])
+        product.save()
+
+        resp['status'] = 'success'
+        resp['msg'] = 'Product Successfully saved.'
+    except Exception as e:
+        resp['msg'] = f"An error occurred: {str(e)}"
+
+    return JsonResponse(resp)
 
 @login_required
 def delete_product(request):
-    data =  request.POST
-    resp = {'status':''}
+    data = request.POST
+    resp = {'status': ''}
     try:
-        Products.objects.filter(id = data['id']).delete()
+        product_id = data.get('id')
+        Products.objects.filter(id=product_id).delete()
         resp['status'] = 'success'
-        messages.success(request, 'Product Successfully deleted.')
     except:
         resp['status'] = 'failed'
-    return HttpResponse(json.dumps(resp), content_type="application/json")
+    return JsonResponse(resp)
 @login_required
 def pos(request):
     products = Products.objects.filter(status = 1)
