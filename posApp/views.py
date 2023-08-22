@@ -181,44 +181,55 @@ def test(request):
         'categories' : categories
     }
     return render(request, 'posApp/test.html',context)
-@login_required
 def save_product(request):
-    data =  request.POST
-    resp = {'status':'failed'}
-    id= ''
-    if 'id' in data:
-        id = data['id']
-    if id.isnumeric() and int(id) > 0:
-        check = Products.objects.exclude(id=id).filter(code=data['code']).all()
-    else:
-        check = Products.objects.filter(code=data['code']).all()
-    if len(check) > 0 :
-        resp['msg'] = "Product Code Already Exists in the database"
-    else:
-        category = Category.objects.filter(id = data['category_id']).first()
-        try:
-            if (data['id']).isnumeric() and int(data['id']) > 0 :
-                save_product = Products.objects.filter(id = data['id']).update(code=data['code'], category_id=category, name=data['name'], description = data['description'], price = float(data['price']),status = data['status'])
+    data = request.POST
+    resp = {'status': 'failed'}
+
+    try:
+        if 'id' in data:
+            product_id = data['id']  # Renamed the variable to avoid conflict with Python's 'id' built-in function
+            if product_id.isnumeric() and int(product_id) > 0:
+                check = Products.objects.exclude(id=product_id).filter(code=data['code']).exists()
             else:
-                save_product = Products(code=data['code'], category_id=category, name=data['name'], description = data['description'], price = float(data['price']),status = data['status'])
-                save_product.save()
-            resp['status'] = 'success'
-            messages.success(request, 'Product Successfully saved.')
-        except:
-            resp['status'] = 'failed'
-    return HttpResponse(json.dumps(resp), content_type="application/json")
+                check = Products.objects.filter(code=data['code']).exists()
+
+            if check:
+                resp['msg'] = "Product Code Already Exists in the database"
+            else:
+                category = Category.objects.filter(id=data['category_id']).first()
+                if category is None:
+                    resp['msg'] = "Invalid Category ID"
+                else:
+                    if product_id.isnumeric() and int(product_id) > 0:
+                        product = Products.objects.get(id=product_id)
+                    else:
+                        product = Products()
+                    product.code = data['code']
+                    product.category_id = category
+                    product.name = data['name']
+                    product.description = data['description']
+                    product.price = float(data['price'])
+                    product.status = data['status']
+                    product.quantity = int(data['quantity'])
+                    product.save()
+                    resp['status'] = 'success'
+                    resp['msg'] = 'Product Successfully saved.'
+    except Exception as e:
+        resp['msg'] = f"An error occurred: {str(e)}"
+
+    return JsonResponse(resp)
 
 @login_required
 def delete_product(request):
-    data =  request.POST
-    resp = {'status':''}
+    data = request.POST
+    resp = {'status': ''}
     try:
-        Products.objects.filter(id = data['id']).delete()
+        product_id = data.get('id')
+        Products.objects.filter(id=product_id).delete()
         resp['status'] = 'success'
-        messages.success(request, 'Product Successfully deleted.')
     except:
         resp['status'] = 'failed'
-    return HttpResponse(json.dumps(resp), content_type="application/json")
+    return JsonResponse(resp)
 @login_required
 def pos(request):
     products = Products.objects.filter(status = 1)
