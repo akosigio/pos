@@ -22153,28 +22153,28 @@ address p {
 }
 
 .mdc-card.info-card.info-card--primary .card-inner .card-icon-wrapper {
-  background-color: #7a00ff;
-  box-shadow: 0 0 10px 5px rgba(122, 0, 255, 0.35);
+  background-color: #D62828;
+  box-shadow: 0 0 10px 5px rgba(214, 40, 40, 0.35);
 }
 
 .mdc-card.info-card.info-card--secondary .card-inner .card-icon-wrapper {
-  background-color: #ff420f;
-  box-shadow: 0 0 10px 5px rgba(255, 66, 15, 0.35);
+  background-color: #D62828;
+  box-shadow: 0 0 10px 5px rgba(214, 40, 40, 0.35);
 }
 
 .mdc-card.info-card.info-card--info .card-inner .card-icon-wrapper {
-  background-color: #00bbdd;
-  box-shadow: 0 0 10px 5px rgba(0, 187, 221, 0.35);
+  background-color: #F77F00;
+  box-shadow: 0 0 10px 5px rgba(247, 127, 0, 0.35);
 }
 
 .mdc-card.info-card.info-card--success .card-inner .card-icon-wrapper {
-  background-color: #00b67a;
-  box-shadow: 0 0 10px 5px rgba(0, 182, 122, 0.35);
+  background-color: #003049;
+  box-shadow: 0 0 10px 5px rgba(0, 48, 73,0.35);
 }
 
 .mdc-card.info-card.info-card--warning .card-inner .card-icon-wrapper {
-  background-color: #ffc107;
-  box-shadow: 0 0 10px 5px rgba(255, 193, 7, 0.35);
+  background-color: #FCBF49;
+  box-shadow: 0 0 10px 5px rgba(252, 191, 73, 0.35);
 }
 
 .mdc-card.info-card.info-card--danger .card-inner .card-icon-wrapper {

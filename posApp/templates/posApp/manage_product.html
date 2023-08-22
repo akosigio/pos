@@ -6,7 +6,7 @@
         
       <div class="form-group mb-3">
         <label for="code" class="control-label">Code</label>
-        <input type="text" name="code" id="code" class="form-control form-control-sm rounded-0" value="{% if product.code %}{{ product.code }}{% else %}{{ random_string }}{% endif %}" required>
+        <input type="text" name="code" id="code" class="form-control form-control-sm rounded-0" value="{% if product.code %}{{ product.code }}{% else %}{{ random_string }}{% endif %}" {% if product.pk %}readonly{% endif %} required>
     </div>
         <div class="form-group mb-3">
             <label for="category_id" class="control-label">Category</label>
@@ -70,8 +70,8 @@
         }
     
         $(function() {
-    var random_string = generateRandomString(8);
-    $('#code').val(random_string);
+            var random_string = generateRandomString(8);
+            $('#code').val(random_string);
 
     $('#product-form').submit(function(e) {
             e.preventDefault();

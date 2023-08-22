@@ -22,9 +22,10 @@ body {
 }
 
 .mdc-card.info-card.info-card--primary .card-inner .card-icon-wrapper {
-    background: var(--bs-primary) !important;
+    background-color: #D62828 !important;
     box-shadow: 0 0 10px 5px rgb(13 110 253 / 28%);
 }
+
 
 .bg-primary {
     background: var(--bs-primary) !important;
