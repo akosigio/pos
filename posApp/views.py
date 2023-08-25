@@ -279,6 +279,9 @@ def save_pos(request):
             sale = Sales.objects.filter(id=sale_id).first()
             product = Products.objects.filter(id=product_id).first()
             qty = data.getlist('qty[]')[i] 
+            product.quantity -= float(qty)
+            product.save()
+            
             price = data.getlist('price[]')[i] 
             total = float(qty) * float(price)
             print({'sale_id' : sale, 'product_id' : product, 'qty' : qty, 'price' : price, 'total' : total})
