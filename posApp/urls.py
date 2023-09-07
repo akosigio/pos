@@ -27,7 +27,15 @@ urlpatterns = [
     path('receipt', views.receipt, name="receipt-modal"),
     path('delete_sale', views.delete_sale, name="delete-sale"),
     path('delete-product/<int:product_id>/', views.delete_product, name='delete-product'),
+<<<<<<< Updated upstream
     path('delete-selected-sales/', views.delete_selected_sales, name='delete-selected-sales'),
+=======
+    path('expenses/', views.expenses_page, name='expenses-page'),
+    path('add-expense/', views.add_expense, name='add-expense'),
+    path('edit-expense/<int:expense_id>/', views.edit_expense, name='edit-expense'),
+    path('delete-expense/<int:expense_id>/', views.delete_expense, name='delete-expense'),
+    path('save-expense/', views.save_expense, name='save-expense'),
+>>>>>>> Stashed changes
     # path('employees', views.employees, name="employee-page"),
     # path('manage_employees', views.manage_employees, name="manage_employees-page"),
     # path('save_employee', views.save_employee, name="save-employee-page"),

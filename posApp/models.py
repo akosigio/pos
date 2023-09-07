@@ -69,3 +69,12 @@ class salesItems(models.Model):
     price = models.FloatField(default=0)
     qty = models.FloatField(default=0)
     total = models.FloatField(default=0)
+
+class Expense(models.Model):
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.CharField(max_length=100)
+    description = models.TextField()
+    date = models.DateField()
+
+    def __str__(self):
+        return self.description

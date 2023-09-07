@@ -76,9 +76,9 @@
 }
 
 .mdc-button:not(:disabled) {
-  color: #7a00ff;
+  color: rgb(91, 90, 90);
   /* @alternate */
-  color: var(--mdc-theme-primary, #7a00ff);
+  color: rgb(91, 90, 90);
 }
 
 .mdc-button__label + .mdc-button__icon {
@@ -6007,6 +6007,16 @@ a.mdc-list-item {
   /* @noflip */
   padding-right: 16px;
 }
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Center buttons vertically */
+}
+
+/* Optional: Add some margin to the buttons for spacing */
+.button-container button {
+  margin-right: 10px; /* Adjust the margin as needed */
+}
 
 .mdc-select__native-control::-ms-expand,
 .mdc-select__selected-text::-ms-expand {
@@ -7754,17 +7764,17 @@ a.mdc-list-item {
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
-  color: rgba(255, 255, 255, 0.87);
+  color: #000;;
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
-  color: rgba(255, 255, 255, 0.87);
+  color: #000;
 }
 
 .mdc-text-field .mdc-text-field__input {
-  caret-color: rgba(255, 255, 255, 0.87);
+  caret-color: rgba(75, 74, 74, 0.87);
   /* @alternate */
-  caret-color: rgba(255, 255, 255, 0.87);
+  caret-color: rgba(75, 74, 74, 0.87);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mdc-text-field__input {
@@ -18175,7 +18185,7 @@ a.mdc-list-item {
 
 /* === Template mixins === */
 .mdc-button--primary:not(:disabled) {
-  background-color: #7a00ff;
+  background-color: #212121;
 }
 
 .mdc-button--primary:not(:disabled) {
@@ -19299,6 +19309,7 @@ p {
 .mdc-typography--headline1,
 h1 {
   font-size: 2.19rem;
+  color:#464545;
 }
 
 .h2,
@@ -19348,6 +19359,13 @@ a {
 .blockquote {
   padding: 1.25rem;
   border: 1px solid #e9eaef;
+}
+.text-bigger {
+  font-size: 24px; /* Adjust the font size as needed */
+}
+
+.font-eveleth {
+  font-family: 'Eveleth', sans-serif; /* Replace 'Eveleth' with the correct font name */
 }
 
 address p {
@@ -20647,7 +20665,7 @@ address p {
 }
 
 .mdc-button.filled-button--info:not(:disabled) {
-  background-color: #00bbdd;
+  background-color: #f0f1f1;
 }
 
 .mdc-button.filled-button--info:not(:disabled) {
@@ -20690,7 +20708,7 @@ address p {
 }
 
 .mdc-button.filled-button--info:not(:disabled) {
-  color: #fff;
+  color: #000;
 }
 
 .mdc-button.outlined-button--info:not(:disabled) {
@@ -22057,11 +22075,11 @@ address p {
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field-textarea) .mdc-text-field__input {
-  border-bottom-color: #e9eaef;
+  border-bottom-color:  rgb(91, 90, 90);
 }
 
 .mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--outlined):not(.mdc-text-field-textarea) .mdc-text-field__input:hover {
-  border-bottom-color: #cbceda;
+  border-bottom-color: rgb(91, 90, 90);
 }
 
 /* === Sample screens === */
@@ -22188,8 +22206,8 @@ address p {
 }
 
 .mdc-card.info-card.info-card--dark .card-inner .card-icon-wrapper {
-  background-color: #3e4b5b;
-  box-shadow: 0 0 10px 5px rgba(62, 75, 91, 0.35);
+  background-color: #7c73e6;
+  box-shadow: 0 0 10px 5px rgba(124,115,230, 0.35);
 }
 
 .mdc-card.info-card.info-card--white .card-inner .card-icon-wrapper {
@@ -23030,7 +23048,19 @@ address p {
   color: #fff;
   padding: 25px;
 }
-
+/* Add this CSS to your stylesheet */
+.with-border {
+  border-left: 4px solid #D62828; /* Replace 'your-color' with your desired color code */
+}
+.with-borders {
+  border-left: 4px solid #F77F00; /* Replace 'your-color' with your desired color code */
+}
+.with-borderss {
+  border-left: 4px solid #003049; /* Replace 'your-color' with your desired color code */
+}
+.with-bordersss {
+  border-left: 4px solid #7c73e6; /* Replace 'your-color' with your desired color code */
+}
 .mdc-drawer .mdc-drawer__content .premium-card p {
   line-height: 1.3;
 }
@@ -23070,6 +23100,16 @@ address p {
 .mdc-drawer .ps .ps__rail-y .ps__thumb-y {
   background-color: #6d6386;
   width: 4px;
+}
+.rounded {
+  border-radius: 8px !important; /* You can adjust the value to control the roundness of the edges */
+}
+.with-background-image {
+  background-image: url('/static/img/samples.jpg'); /* Replace 'your-image-url.jpg' with the URL of your background image */
+  background-size: cover; /* Adjust as needed */
+  background-repeat: no-repeat; /* Adjust as needed */
+  background-position: center center; /* Adjust as needed */
+  color: #fff; /* Set text color to make it readable on the background */
 }
 
 footer {
@@ -23145,6 +23185,7 @@ footer .vertical-divider {
   transition: margin-left .2s linear;
   right: 0;
 }
+
 
 @media (max-width: 991px) {
   .mdc-drawer + .mdc-drawer-app-content .mdc-top-app-bar {
