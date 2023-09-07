@@ -27,6 +27,7 @@ urlpatterns = [
     path('receipt', views.receipt, name="receipt-modal"),
     path('delete_sale', views.delete_sale, name="delete-sale"),
     path('delete-product/<int:product_id>/', views.delete_product, name='delete-product'),
+    path('delete-selected-sales/', views.delete_selected_sales, name='delete-selected-sales'),
     # path('employees', views.employees, name="employee-page"),
     # path('manage_employees', views.manage_employees, name="manage_employees-page"),
     # path('save_employee', views.save_employee, name="save-employee-page"),

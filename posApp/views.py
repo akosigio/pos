@@ -11,10 +11,33 @@ from django.shortcuts import redirect
 import json, sys
 from datetime import date, datetime
 from django.http import JsonResponse
-from .models import Products, Category
+from .models import Products, Category, Sales, salesItems
 
 # Login
+@login_required
+def delete_selected_sales(request):
+    if request.method == 'POST':
+        sale_ids = request.POST.get('ids', '').split(',')
 
+        # Check if there are any selected sale IDs
+        if sale_ids:
+            try:
+                # Delete the selected sales
+                Sales.objects.filter(id__in=sale_ids).delete()
+
+                # Also delete the associated salesItems
+                salesItems.objects.filter(sale_id__in=sale_ids).delete()
+
+                response_data = {'status': 'success', 'message': 'Selected sales have been deleted.'}
+            except Exception as e:
+                response_data = {'status': 'error', 'message': 'An error occurred while deleting selected sales.'}
+        else:
+            response_data = {'status': 'error', 'message': 'No sales selected for deletion.'}
+
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'})
+@login_required
 def lookup_product(request):
     barcode = request.GET.get('barcode', None)
     
@@ -32,9 +55,11 @@ def lookup_product(request):
             response_data = {'status': 'error', 'message': 'Product not found.'}
     else:
         response_data = {'status': 'error', 'message': 'Invalid barcode.'}
-    
-    return JsonResponse(response_data)
 
+    print(response_data)  # Add this line for debugging
+
+    return JsonResponse(response_data)
+@login_required
 def login_user(request):
     logout(request)
     resp = {"status":'failed','msg':''}

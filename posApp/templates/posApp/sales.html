@@ -6,6 +6,15 @@
         </div>
     </div>
 </div>
+<style>
+    #delete-all-button {
+        float: right;
+    }
+</style>
+
+<button class="mdc-button mdc-button--raised p-1 icon-button filled-button--danger mdc-ripple-upgraded" id="delete-all-button" type="button" title="Delete All" style="width: 150px; height: 40px;">
+    <i class="material-icons mdc-button_icon">delete</i> Delete All
+</button>
 <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
     <div class="mdc-card">
         <div class="table-responsive">
@@ -17,6 +26,7 @@
                     <col width="25%">
                     <col width="15%">
                     <col width="15%">
+                    <col width="10%"> <!-- Add a column for checkboxes -->
                 </colgroup>
                 <thead>
                     <tr>
@@ -37,16 +47,17 @@
                         <td class="px-2 py-1 text-center">{{ sale.code }}</td>
                         <td class="px-2 py-1 text-center">{{ sale.grand_total|intcomma }}</td>
                         <td class="px-2 py-1 text-center">({{ sale.tax }}%) {{ sale.tax_amount|intcomma:2 }}</td>
-                        <td class="px-2 py-1 text-center">{{ sale.item_count|intcomma }}</td>
-                        <script>console.log("ID:", "{{ sale.id|intcomma }}");</script>
-                        <script>console.log("Item Count:", "{{ sale.item_count|intcomma }}");</script>
+                        <td class="px-2 py-1 text-center">{{ sale.item_count }}</td>
                         <td class="px-2 py-1 text-center">
+                            <!-- Add a checkbox for each item -->
+                            <input type="checkbox" class="sale-checkbox" data-id="{{ sale.id }}">
                             <button class="mdc-button mdc-button--raised p-1 icon-button filled-button--light mdc-ripple-upgraded view-data" type="button" data-id="{{ sale.id }}" title="View Receipt">
                                 <i class="material-icons mdc-button__icon">receipt</i>
                             </button>
                             <button class="mdc-button mdc-button--raised p-1 icon-button filled-button--danger mdc-ripple-upgraded delete-data" type="button" data-id="{{ sale.id }}" data-code="{{ sale.code }}" title="Delete">
                                 <i class="material-icons mdc-button__icon">deleteoutline</i>
                             </button>
+                            
                         </td>
                     </tr>
                     {% endfor %}
@@ -58,6 +69,25 @@
 {% endblock pageContent %} {% block ScriptBlock %}
 <script>
     $(function() {
+        $('#delete-all-button').click(function() {
+        var selectedIds = [];
+
+        // Collect the IDs of selected items
+        $('.sale-checkbox:checked').each(function() {
+            selectedIds.push($(this).data('id'));
+        });
+
+        if (selectedIds.length > 0) {
+            // Use a custom confirmation dialog
+            if (confirm('Are you sure to delete the selected items?')) {
+                delete_selected_sales(selectedIds);
+            }
+        } else {
+            alert('Please select at least one item to delete.');
+        }
+    });
+
+
         $('.view-data').click(function() {
             uni_modal("Transaction's Receipt", "{% url 'receipt-modal' %}?id=" + $(this).attr('data-id'))
         })
@@ -66,6 +96,33 @@
         })
 
     })
+    function delete_selected_sales(ids) {
+    start_loader();
+    $.ajax({
+        headers: {
+            "X-CSRFToken": '{{csrf_token}}'
+        },
+        url: "{% url 'delete-selected-sales' %}",
+        method: "POST",
+        data: {
+            ids: ids.join(',')
+        },
+        dataType: "json",
+        error: err => {
+            console.log(err);
+            alert_toast("An error occurred.", 'error');
+            end_loader();
+        },
+        success: function(resp) {
+            if (typeof resp == 'object' && resp.status == 'success') {
+                location.reload();
+            } else {
+                alert_toast("An error occurred.", 'error');
+                end_loader();
+            }
+        }
+    });
+}
 
     function delete_sale($id) {
         start_loader();

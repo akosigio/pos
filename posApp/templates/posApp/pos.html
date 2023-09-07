@@ -307,7 +307,7 @@
         $('[name="sub_total"]').text(sub_total.toLocaleString('en-US', { minimumFractionDigits: 2 }));
 
         const newTotalSum = totalSum.toFixed(2);
-        $('#overall_total').text(newTotalSum);
+        $('#grand_total').text(newTotalSum);
     }
 
 
@@ -349,6 +349,7 @@
                             newRow.append($('<td>').text(total));
 
                             tableBody.append(newRow);
+                            console.log(newRow);
 
                             comp();
 
