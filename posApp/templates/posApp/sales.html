@@ -1,8 +1,8 @@
 {% extends "posApp/base.html" %} {% load humanize %} {% block pageContent %}
 <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
-    <div class="mdc-card py-2">
-        <div class="d-flex justify-content-between align-items-center">
-            <h4 class="card-title mb-0">Sales List</h4>
+    <div class="mdc-card with-background-image">
+        <div class="d-flex justify-content-between">
+            <h1 class="card-title mb-0">.</h1>
         </div>
     </div>
 </div>
@@ -34,7 +34,6 @@
                         <th class="text-center py-1">DateTime</th>
                         <th class="text-center py-1">Trans. Code</th>
                         <th class="text-center py-1">Total</th>
-                        <th class="text-center py-1">Tax Inclusive</th>
                         <th class="text-center py-1">Items</th>
                         <th class="text-center py-1">Action</th>
                     </tr>
@@ -46,8 +45,12 @@
                         <td class="px-2 py-1 text-center">{{ sale.date_added|date:'Y-m-d H:i' }}</td>
                         <td class="px-2 py-1 text-center">{{ sale.code }}</td>
                         <td class="px-2 py-1 text-center">{{ sale.grand_total|intcomma }}</td>
+<<<<<<< Updated upstream
                         <td class="px-2 py-1 text-center">({{ sale.tax }}%) {{ sale.tax_amount|intcomma:2 }}</td>
                         <td class="px-2 py-1 text-center">{{ sale.item_count }}</td>
+=======
+                        <td class="px-2 py-1 text-center">{{ sale.item_count|intcomma }}</td>
+>>>>>>> Stashed changes
                         <td class="px-2 py-1 text-center">
                             <!-- Add a checkbox for each item -->
                             <input type="checkbox" class="sale-checkbox" data-id="{{ sale.id }}">
